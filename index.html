@@ -118,6 +118,13 @@ function card(a) {
     ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener">Join internal test</a>`
     : `<span class="btn off">Test link not set</span>`;
 
+  // Only live-on-Play apps get a store link. For anything still in testing the
+  // store page is useless to a tester (or misleading), so the opt-in link is the
+  // only way in.
+  const store = a.statusKind === 'production'
+    ? `<a class="btn" href="${esc(a.storeUrl)}" target="_blank" rel="noopener">Play Store</a>`
+    : '';
+
   return `<div class="card">
     ${icon}
     <div class="body">
@@ -127,7 +134,7 @@ function card(a) {
       <div class="tags">${tags}</div>
       <div class="actions">
         ${test}
-        <a class="btn" href="${esc(a.storeUrl)}" target="_blank" rel="noopener">Play Store</a>
+        ${store}
       </div>
     </div>
   </div>`;
