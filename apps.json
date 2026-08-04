@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T10:54:06Z",
+  "generated": "2026-08-04T10:55:57Z",
   "apps": [
     {
       "package": "com.scram",
@@ -27,7 +27,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.scram",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701541773977870216"
     },
     {
       "package": "com.BoltAway",
@@ -63,7 +63,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.brickslide",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701709560472334900"
     },
     {
       "package": "com.CyberneticRolls",
@@ -81,7 +81,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.CyberneticRolls",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4700429622775951240"
     },
     {
       "package": "ca.prundaru.homevault",
@@ -99,7 +99,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=ca.prundaru.homevault",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
     },
     {
       "package": "com.Isletopia",
@@ -117,7 +117,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.Isletopia",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701214436800246559"
     },
     {
       "package": "com.madspins",
@@ -135,7 +135,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.madspins",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701223413274888476"
     },
     {
       "package": "com.SpaceDonkey",
@@ -153,7 +153,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.SpaceDonkey",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701052251356315827"
     },
     {
       "package": "com.tripvault",
