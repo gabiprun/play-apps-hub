@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T10:55:57Z",
+  "generated": "2026-08-04T10:57:35Z",
   "apps": [
     {
       "package": "com.scram",
@@ -171,7 +171,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.tripvault",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701349244899703378"
     }
   ]
 }
