@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T09:14:09Z",
+  "generated": "2026-08-04T10:54:06Z",
   "apps": [
     {
       "package": "com.scram",
@@ -45,7 +45,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.BoltAway",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4701641868963799938"
     },
     {
       "package": "com.brickslide",
@@ -159,7 +159,7 @@
       "package": "com.tripvault",
       "title": "Trip Vault",
       "shortDescription": "",
-      "icon": null,
+      "icon": "icons/com.tripvault.png",
       "status": "Internal testing",
       "statusKind": "internal",
       "version": "1.0.0",
