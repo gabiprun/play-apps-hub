@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T02:24:20Z",
+  "generated": "2026-08-04T09:14:09Z",
   "apps": [
     {
       "package": "com.scram",
@@ -160,10 +160,16 @@
       "title": "Trip Vault",
       "shortDescription": "",
       "icon": null,
-      "status": "No listing yet",
-      "statusKind": "none",
-      "version": null,
-      "tracks": [],
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0.0",
+          "status": "completed"
+        }
+      ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.tripvault",
       "testUrl": null
     }
