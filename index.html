@@ -9,13 +9,13 @@
   :root {
     --bg: #0d1117; --panel: #161b22; --panel-hi: #1c2430;
     --line: #262d38; --text: #e6edf3; --muted: #8b949e;
-    --accent: #3fb950; --accent-ink: #0d1117; --link: #58a6ff; --warn: #d29922; --bad: #f85149;
+    --accent: #3fb950; --accent-ink: #0d1117; --link: #58a6ff; --bad: #f85149;
   }
   @media (prefers-color-scheme: light) {
     :root {
       --bg: #f6f8fa; --panel: #ffffff; --panel-hi: #f0f3f6;
       --line: #d8dee4; --text: #1f2328; --muted: #656d76;
-      --accent: #1f883d; --accent-ink: #ffffff; --link: #0969da; --warn: #9a6700; --bad: #cf222e;
+      --accent: #1f883d; --accent-ink: #ffffff; --link: #0969da; --bad: #cf222e;
     }
   }
   * { box-sizing: border-box; }
@@ -25,16 +25,16 @@
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
-  header { margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  header { margin-bottom: 28px; }
   h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
   .sub { color: var(--muted); font-size: 14px; margin: 0; }
   .bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 22px 0 24px; }
-  input[type=search], input[type=text], input[type=password], input[type=url] {
-    padding: 9px 13px; border-radius: 8px; border: 1px solid var(--line);
-    background: var(--panel); color: var(--text); font-size: 14px; font-family: inherit;
+  input[type=search] {
+    flex: 1 1 240px; min-width: 200px; padding: 9px 13px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text);
+    font-size: 14px; font-family: inherit;
   }
-  input[type=search] { flex: 1 1 240px; min-width: 200px; }
-  input:focus { outline: 2px solid var(--link); outline-offset: -1px; }
+  input[type=search]:focus { outline: 2px solid var(--link); outline-offset: -1px; }
   .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
   .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
   .card {
@@ -62,66 +62,24 @@
   .tag.production { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
   .tag.internal, .tag.alpha, .tag.beta { color: var(--link); border-color: color-mix(in srgb, var(--link) 45%, transparent); }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  a.btn, button.btn {
-    font: inherit; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 7px;
-    text-decoration: none; border: 1px solid var(--line); color: var(--text);
-    background: transparent; cursor: pointer;
+  a.btn {
+    font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 7px;
+    text-decoration: none; border: 1px solid var(--line); color: var(--text); background: transparent;
   }
-  a.btn:hover, button.btn:hover { background: var(--panel-hi); border-color: var(--muted); }
-  a.btn.primary, button.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
-  a.btn.primary:hover, button.btn.primary:hover { filter: brightness(1.08); }
-  button.btn:disabled { opacity: .45; cursor: default; }
-  button.btn:disabled:hover { background: transparent; border-color: var(--line); }
+  a.btn:hover { background: var(--panel-hi); border-color: var(--muted); }
+  a.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  a.btn.primary:hover { filter: brightness(1.08); }
   .btn.off { opacity: .45; pointer-events: none; }
   footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
   .err { color: var(--bad); }
-
-  /* --- admin --- */
-  .edit { margin-top: 12px; }
-  .edit label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
-  .edit input { width: 100%; font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .edit input.dirty { border-color: var(--warn); }
-  #adminbar {
-    display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 22px;
-    padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn);
-    border-radius: 10px; background: var(--panel);
-  }
-  #adminbar.on { display: flex; }
-  #adminbar .who { font-size: 13px; font-weight: 600; color: var(--warn); margin-right: auto; }
-  #adminbar input { font-size: 13px; }
-  #status { font-size: 13px; color: var(--muted); }
-  #status.bad { color: var(--bad); }
-  #status.good { color: var(--accent); }
-  dialog {
-    border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
-    color: var(--text); padding: 22px; max-width: 340px; width: 90%;
-  }
-  dialog::backdrop { background: rgba(0,0,0,.55); }
-  dialog h2 { margin: 0 0 6px; font-size: 17px; }
-  dialog p { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
-  dialog input { width: 100%; margin-bottom: 12px; }
-  dialog .row { display: flex; gap: 8px; justify-content: flex-end; }
-  #pwerr { color: var(--bad); font-size: 12px; min-height: 16px; margin: -6px 0 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div>
-      <h1>App Hub</h1>
-      <p class="sub">Every app in the Play developer account, with its test-track link. Synced from the Google Play Developer API.</p>
-    </div>
-    <button class="btn" id="lockbtn" title="Admin edit mode">Admin</button>
+    <h1>App Hub</h1>
+    <p class="sub">Every app in the Play developer account, with its test-track link. Synced from the Google Play Developer API.</p>
   </header>
-
-  <div id="adminbar">
-    <span class="who">Edit mode</span>
-    <input type="text" id="newpkg" placeholder="add package, e.g. com.newapp" size="24">
-    <button class="btn" id="addbtn">Add app</button>
-    <button class="btn primary" id="savebtn" disabled>Save changes</button>
-    <button class="btn" id="lockoff">Lock</button>
-    <span id="status"></span>
-  </div>
 
   <div class="bar">
     <input type="search" id="q" placeholder="Filter apps…" autocomplete="off">
@@ -132,43 +90,17 @@
   <footer id="foot"></footer>
 </div>
 
-<dialog id="pwdlg">
-  <h2>Admin edit mode</h2>
-  <p>Unlocks the GitHub token stored encrypted in this page, so edits commit straight to the repo.</p>
-  <form method="dialog" id="pwform">
-    <input type="password" id="pw" placeholder="Password" autocomplete="current-password">
-    <div id="pwerr"></div>
-    <div class="row">
-      <button class="btn" value="cancel" type="button" id="pwcancel">Cancel</button>
-      <button class="btn primary" id="pwgo" type="submit">Unlock</button>
-    </div>
-  </form>
-</dialog>
-
-<script src="admin.js"></script>
 <script>
 const grid = document.getElementById('grid');
 const foot = document.getElementById('foot');
 const countEl = document.getElementById('count');
-const statusEl = document.getElementById('status');
 const q = document.getElementById('q');
-const saveBtn = document.getElementById('savebtn');
 
 let apps = [];
-let packages = [];
-let links = {};      // committed state
-let edits = {};      // in-page changes, package -> url
+let links = {};
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-const linkFor = pkg => (pkg in edits ? edits[pkg] : (links[pkg] || ''));
-const dirty = () => Object.keys(edits).some(p => (edits[p] || '') !== (links[p] || ''));
-
-function say(msg, kind = '') {
-  statusEl.textContent = msg;
-  statusEl.className = kind;
-}
 
 function card(a) {
   const icon = a.icon
@@ -179,18 +111,12 @@ function card(a) {
     a.version ? `<span class="tag">v${esc(a.version)}</span>` : ''
   ].join('');
 
-  const url = linkFor(a.package);
+  // links.json wins over apps.json, so a pasted link shows up on the next Pages
+  // build instead of waiting for the 6-hourly Play sync to fold it in.
+  const url = links[a.package] || a.testUrl || '';
   const test = url
     ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener">Join internal test</a>`
     : `<span class="btn off">Test link not set</span>`;
-
-  const editor = Admin.unlocked ? `
-    <div class="edit">
-      <label for="in-${esc(a.package)}">Internal test link</label>
-      <input type="url" id="in-${esc(a.package)}" data-pkg="${esc(a.package)}"
-             value="${esc(url)}" placeholder="https://play.google.com/apps/internaltest/…"
-             class="${(edits[a.package] ?? links[a.package] ?? '') !== (links[a.package] || '') ? 'dirty' : ''}">
-    </div>` : '';
 
   return `<div class="card">
     ${icon}
@@ -203,7 +129,6 @@ function card(a) {
         ${test}
         <a class="btn" href="${esc(a.storeUrl)}" target="_blank" rel="noopener">Play Store</a>
       </div>
-      ${editor}
     </div>
   </div>`;
 }
@@ -214,129 +139,23 @@ function render() {
     !needle || (a.title + ' ' + a.package + ' ' + (a.shortDescription || '')).toLowerCase().includes(needle));
   grid.innerHTML = shown.map(card).join('') || `<p class="sub">No apps match “${esc(q.value)}”.</p>`;
   countEl.textContent = `${shown.length} of ${apps.length} apps`;
-  saveBtn.disabled = !dirty();
-
-  grid.querySelectorAll('.edit input').forEach(input => {
-    input.addEventListener('input', () => {
-      const pkg = input.dataset.pkg;
-      edits[pkg] = input.value.trim();
-      input.classList.toggle('dirty', (edits[pkg] || '') !== (links[pkg] || ''));
-      saveBtn.disabled = !dirty();
-    });
-  });
 }
 
-async function loadData() {
-  const [appData, linkData, pkgData] = await Promise.all([
-    fetch('apps.json?t=' + Date.now()).then(r => r.json()),
-    fetch('links.json?t=' + Date.now()).then(r => r.json()).catch(() => ({})),
-    fetch('packages.json?t=' + Date.now()).then(r => r.json()).catch(() => ({ packages: [] })),
-  ]);
-
+Promise.all([
+  fetch('apps.json?t=' + Date.now()).then(r => r.json()),
+  fetch('links.json?t=' + Date.now()).then(r => r.json()).catch(() => ({})),
+]).then(([appData, linkData]) => {
   apps = appData.apps || [];
-  packages = pkgData.packages || [];
   links = Object.fromEntries(
-    Object.entries(linkData).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string'));
-
+    Object.entries(linkData).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string' && v));
   render();
   const when = new Date(appData.generated);
   foot.textContent = 'Last synced from Play ' + (isNaN(when) ? appData.generated : when.toLocaleString());
-}
-
-loadData().catch(e => {
+}).catch(e => {
   grid.innerHTML = `<p class="err">Could not load app data — ${esc(e.message)}</p>`;
 });
 
 q.addEventListener('input', render);
-
-/* ---------- admin wiring ---------- */
-const dlg = document.getElementById('pwdlg');
-const pwErr = document.getElementById('pwerr');
-const adminBar = document.getElementById('adminbar');
-const lockBtn = document.getElementById('lockbtn');
-
-lockBtn.addEventListener('click', async () => {
-  if (!Admin.cfg && !(await Admin.loadConfig())) {
-    alert('No admin.json in this repo yet — run make_admin.py and push it first.');
-    return;
-  }
-  pwErr.textContent = '';
-  document.getElementById('pw').value = '';
-  dlg.showModal();
-});
-
-document.getElementById('pwcancel').addEventListener('click', () => dlg.close());
-
-document.getElementById('pwform').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const go = document.getElementById('pwgo');
-  go.disabled = true;
-  pwErr.textContent = 'Deriving key…';
-  try {
-    await Admin.unlock(document.getElementById('pw').value);
-    dlg.close();
-    adminBar.classList.add('on');
-    lockBtn.textContent = 'Editing';
-    say('Unlocked. Edits commit to GitHub; the site rebuilds in about a minute.');
-    render();
-  } catch (err) {
-    pwErr.textContent = err.message;
-  } finally {
-    go.disabled = false;
-    document.getElementById('pw').value = '';
-  }
-});
-
-document.getElementById('lockoff').addEventListener('click', () => {
-  if (dirty() && !confirm('You have unsaved link edits. Discard them?')) return;
-  Admin.lock();
-  edits = {};
-  adminBar.classList.remove('on');
-  lockBtn.textContent = 'Admin';
-  say('');
-  render();
-});
-
-saveBtn.addEventListener('click', async () => {
-  saveBtn.disabled = true;
-  say('Saving…');
-  try {
-    const merged = { ...links };
-    for (const [pkg, url] of Object.entries(edits)) {
-      if (url) merged[pkg] = url; else merged[pkg] = '';
-    }
-    await Admin.saveLinks(merged);
-    links = merged;
-    edits = {};
-    render();
-    say('Saved. Live on the site in about a minute.', 'good');
-  } catch (err) {
-    say(err.message, 'bad');
-    saveBtn.disabled = false;
-  }
-});
-
-document.getElementById('addbtn').addEventListener('click', async () => {
-  const input = document.getElementById('newpkg');
-  const pkg = input.value.trim();
-  if (!pkg) return;
-  if (!/^[a-zA-Z][\w]*(\.[a-zA-Z][\w]*)+$/.test(pkg)) {
-    say('That does not look like a package name.', 'bad');
-    return;
-  }
-  if (packages.includes(pkg)) {
-    say('Already in the list.', 'bad');
-    return;
-  }
-  say('Adding…');
-  try {
-    packages = await Admin.addPackage(pkg, packages);
-    input.value = '';
-    say(`Added ${pkg}. It appears here once the sync runs (~2 min).`, 'good');
-  } catch (err) {
-    say(err.message, 'bad');
-  }
-});
 </script>
 </body>
 </html>

@@ -34,35 +34,16 @@ No Google API exposes the tester opt-in URL, so `links.json` holds them by hand:
 
 > Play Console → app → Testing → Internal testing → **Testers** tab → *Copy link*
 
-Set it either from the site's admin mode (below) or by editing `links.json` and pushing.
-Apps without a link show a disabled "Test link not set" button and still link to their
-Play Store page.
+Paste it as the value for that package in `links.json` and push. Apps without a link show a
+disabled "Test link not set" button and still link to their Play Store page.
 
-## Admin edit mode
+Pushing `links.json` is enough on its own — the page reads it directly and lets it override
+`apps.json`, so a new link is live on the next Pages build (~1 min) without waiting for the
+Play sync to fold it in.
 
-The **Admin** button on the site unlocks in-browser editing of the test links and lets you
-add a package — no local checkout needed, works from a phone.
-
-There is no backend: `admin.json` holds a GitHub token encrypted with AES-256-GCM under a
-key derived from the admin password (PBKDF2-SHA256, 600k iterations). The password decrypts
-it in memory only and the page commits through the GitHub Contents API. A wrong password
-fails the GCM auth tag, so no token ever comes out.
-
-**Setup:**
-
-1. Create a **fine-grained** PAT at github.com/settings/personal-access-tokens/new —
-   *Resource owner* your account, *Only select repositories* → `play-apps-hub`,
-   *Repository permissions* → **Contents: Read and write**, nothing else. Set an expiry.
-2. `python3 make_admin.py` — paste the token, choose a long random password.
-3. Commit and push the generated `admin.json`.
-
-Rotate by rerunning step 2–3 with a fresh token. Revoking the PAT on GitHub instantly kills
-edit mode regardless of who holds the password.
-
-**Threat model, plainly:** this repo is public, so anyone can download `admin.json` and
-attempt an offline brute force. 600k PBKDF2 iterations make that slow, but the password is
-the only barrier — use a generated one, not a memorable phrase. Worst case if it falls: write
-access to this one repo, and nothing else. The token cannot touch other repos or your account.
+There is deliberately **no in-browser editing**: a static site has nowhere safe to keep a
+GitHub token, and standing up a backend just to edit a handful of URLs wasn't worth it.
+Editing is a `links.json` push.
 
 ## Credentials
 
