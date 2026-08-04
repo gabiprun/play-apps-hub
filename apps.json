@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T10:57:35Z",
+  "generated": "2026-08-04T14:43:46Z",
   "apps": [
     {
       "package": "com.scram",
@@ -157,16 +157,16 @@
     },
     {
       "package": "com.tripvault",
-      "title": "Trip Vault",
-      "shortDescription": "",
+      "title": "TripVault: Trips & Points",
+      "shortDescription": "Every trip in one itinerary \u2014 flights in local time, hotels, cars, points.",
       "icon": "icons/com.tripvault.png",
       "status": "Internal testing",
       "statusKind": "internal",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "tracks": [
         {
           "track": "Internal testing",
-          "version": "1.0.0",
+          "version": "1.0.2",
           "status": "completed"
         }
       ],
