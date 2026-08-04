@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>App Hub — Prundaru</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --panel-hi: #1c2430;
+    --line: #262d38; --text: #e6edf3; --muted: #8b949e;
+    --accent: #3fb950; --accent-ink: #0d1117; --link: #58a6ff;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f8fa; --panel: #ffffff; --panel-hi: #f0f3f6;
+      --line: #d8dee4; --text: #1f2328; --muted: #656d76;
+      --accent: #1f883d; --accent-ink: #ffffff; --link: #0969da;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { margin-bottom: 28px; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 22px 0 24px; }
+  input[type=search] {
+    flex: 1 1 240px; min-width: 200px; padding: 9px 13px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 14px;
+  }
+  input[type=search]:focus { outline: 2px solid var(--link); outline-offset: -1px; }
+  .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .card:hover { background: var(--panel-hi); }
+  .icon {
+    width: 60px; height: 60px; border-radius: 14px; flex: none; object-fit: cover;
+    background: var(--panel-hi); border: 1px solid var(--line);
+  }
+  .icon.ph { display: grid; place-items: center; color: var(--muted); font-size: 22px; font-weight: 600; }
+  .body { min-width: 0; flex: 1; }
+  .name { font-weight: 600; font-size: 16px; margin: 0 0 2px; }
+  .pkg { color: var(--muted); font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .desc {
+    color: var(--muted); font-size: 13px; margin: 8px 0 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .tag {
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted); white-space: nowrap;
+  }
+  .tag.production { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .tag.internal, .tag.alpha, .tag.beta { color: var(--link); border-color: color-mix(in srgb, var(--link) 45%, transparent); }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  a.btn {
+    font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 7px;
+    text-decoration: none; border: 1px solid var(--line); color: var(--text); background: transparent;
+  }
+  a.btn:hover { background: var(--panel-hi); border-color: var(--muted); }
+  a.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  a.btn.primary:hover { filter: brightness(1.08); }
+  .btn.off { opacity: .45; pointer-events: none; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
+  .err { color: #f85149; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>App Hub</h1>
+    <p class="sub">Every app in the Play developer account, with its test-track link. Synced from the Google Play Developer API.</p>
+  </header>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="Filter apps…" autocomplete="off">
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const grid = document.getElementById('grid');
+const foot = document.getElementById('foot');
+const countEl = document.getElementById('count');
+const q = document.getElementById('q');
+let apps = [];
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function card(a) {
+  const icon = a.icon
+    ? `<img class="icon" src="${esc(a.icon)}" alt="" loading="lazy">`
+    : `<div class="icon ph">${esc((a.title || '?')[0].toUpperCase())}</div>`;
+  const tags = [
+    `<span class="tag ${esc(a.statusKind)}">${esc(a.status)}</span>`,
+    a.version ? `<span class="tag">v${esc(a.version)}</span>` : ''
+  ].join('');
+  const test = a.testUrl
+    ? `<a class="btn primary" href="${esc(a.testUrl)}" target="_blank" rel="noopener">Join internal test</a>`
+    : `<span class="btn off">Test link not set</span>`;
+  return `<div class="card">
+    ${icon}
+    <div class="body">
+      <p class="name">${esc(a.title)}</p>
+      <span class="pkg">${esc(a.package)}</span>
+      ${a.shortDescription ? `<p class="desc">${esc(a.shortDescription)}</p>` : ''}
+      <div class="tags">${tags}</div>
+      <div class="actions">
+        ${test}
+        <a class="btn" href="${esc(a.storeUrl)}" target="_blank" rel="noopener">Play Store</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function render() {
+  const needle = q.value.trim().toLowerCase();
+  const shown = apps.filter(a =>
+    !needle || (a.title + ' ' + a.package + ' ' + (a.shortDescription || '')).toLowerCase().includes(needle));
+  grid.innerHTML = shown.map(card).join('') || `<p class="sub">No apps match “${esc(q.value)}”.</p>`;
+  countEl.textContent = `${shown.length} of ${apps.length} apps`;
+}
+
+fetch('apps.json?t=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    apps = data.apps || [];
+    render();
+    const when = new Date(data.generated);
+    foot.textContent = 'Last synced from Play ' + (isNaN(when) ? data.generated : when.toLocaleString());
+  })
+  .catch(e => { grid.innerHTML = `<p class="err">Could not load apps.json — ${esc(e.message)}</p>`; });
+
+q.addEventListener('input', render);
+</script>
+</body>
+</html>

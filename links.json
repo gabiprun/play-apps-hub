@@ -1,0 +1,12 @@
+{
+  "_comment": "Internal-testing opt-in links. No Google API exposes these - copy from Play Console > Testing > Internal testing > Testers tab > 'Copy link'. Key = package name.",
+  "com.scram": "",
+  "com.CyberneticRolls": "",
+  "com.madspins": "",
+  "com.SpaceDonkey": "",
+  "ca.prundaru.homevault": "",
+  "com.BoltAway": "",
+  "com.brickslide": "",
+  "com.Isletopia": "",
+  "com.tripvault": ""
+}

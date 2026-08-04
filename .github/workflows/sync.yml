@@ -1,0 +1,45 @@
+name: Sync Play apps
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["packages.json", "links.json", "sync.py"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: play-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet google-api-python-client google-auth
+
+      - name: Pull listings, icons and tracks from Play
+        env:
+          PLAY_SERVICE_ACCOUNT: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
+        run: python3 sync.py
+
+      - name: Commit changes
+        run: |
+          git config user.name  "play-sync[bot]"
+          git config user.email "play-sync@users.noreply.github.com"
+          git add apps.json icons
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "sync: refresh app list from Play"
+            git push
+          fi
