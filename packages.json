@@ -1,6 +1,7 @@
 {
   "_comment": "Fallback app list, used when the Play Developer Reporting API is not enabled. Add a package name here when you publish a new app.",
   "packages": [
+    "ca.dealharbour",
     "ca.prundaru.homevault",
     "com.BoltAway",
     "com.CyberneticRolls",
