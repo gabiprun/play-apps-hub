@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-23T18:51:23Z",
+  "generated": "2026-08-24T02:00:51Z",
   "apps": [
     {
       "package": "com.scram",
@@ -66,6 +66,24 @@
       "testUrl": "https://play.google.com/apps/internaltest/4701709560472334900"
     },
     {
+      "package": "ca.prundaru.homevault",
+      "title": "ca.prundaru.homevault",
+      "shortDescription": "",
+      "icon": "icons/ca.prundaru.homevault.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.1.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.1.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=ca.prundaru.homevault",
+      "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
+    },
+    {
       "package": "com.CyberneticRolls",
       "title": "Cybernetic Rolls",
       "shortDescription": "Roll one die. Fight what you land on. Buy chrome. Die. Reroll the lineage.",
@@ -100,24 +118,6 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=ca.dealharbour",
       "testUrl": "https://play.google.com/apps/internaltest/4701740621038776981"
-    },
-    {
-      "package": "ca.prundaru.homevault",
-      "title": "HomeVault",
-      "shortDescription": "Your home inventory: every item, its place, its receipt, and its warranty.",
-      "icon": "icons/ca.prundaru.homevault.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "1.1.0",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "1.1.0",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=ca.prundaru.homevault",
-      "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
     },
     {
       "package": "com.Isletopia",
