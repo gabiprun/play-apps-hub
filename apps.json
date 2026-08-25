@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-25T07:12:25Z",
+  "generated": "2026-08-25T13:15:18Z",
   "apps": [
     {
       "package": "com.scram",
@@ -172,24 +172,6 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.SpaceDonkey",
       "testUrl": "https://play.google.com/apps/internaltest/4701052251356315827"
-    },
-    {
-      "package": "com.tripvault",
-      "title": "TripVault: Trips & Points",
-      "shortDescription": "Every trip in one itinerary \u2014 flights in local time, hotels, cars, points.",
-      "icon": "icons/com.tripvault.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "1.1.0",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "1.1.0",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=com.tripvault",
-      "testUrl": "https://play.google.com/apps/internaltest/4701349244899703378"
     }
   ]
 }
