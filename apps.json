@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T20:10:06Z",
+  "generated": "2026-08-27T09:57:54Z",
   "apps": [
     {
       "package": "com.scram",
@@ -48,6 +48,42 @@
       "testUrl": "https://play.google.com/apps/internaltest/4701641868963799938"
     },
     {
+      "package": "com.brickslide",
+      "title": "Brick Slide",
+      "shortDescription": "Slide every brick out through its matching gate. Simple, colorful, addictive!",
+      "icon": "icons/com.brickslide.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "0.1.0 (1)",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "0.1.0 (1)",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.brickslide",
+      "testUrl": "https://play.google.com/apps/internaltest/4701709560472334900"
+    },
+    {
+      "package": "com.CyberneticRolls",
+      "title": "Cybernetic Rolls",
+      "shortDescription": "Roll one die. Fight what you land on. Buy chrome. Die. Reroll the lineage.",
+      "icon": "icons/com.CyberneticRolls.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.1.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.1.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.CyberneticRolls",
+      "testUrl": "https://play.google.com/apps/internaltest/4700429622775951240"
+    },
+    {
       "package": "ca.dealharbour",
       "title": "DealHarbour",
       "shortDescription": "Your real estate command center \u2014 deals, deadlines, documents and CMAs.",
@@ -84,6 +120,24 @@
       "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
     },
     {
+      "package": "com.Isletopia",
+      "title": "Isletopia",
+      "shortDescription": "A side-scrolling island adventure. Explore, meet islanders, solve every quest!",
+      "icon": "icons/com.Isletopia.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0.1 (2)",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0.1 (2)",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.Isletopia",
+      "testUrl": "https://play.google.com/apps/internaltest/4701214436800246559"
+    },
+    {
       "package": "com.madspins",
       "title": "Mad Spins",
       "shortDescription": "Ragdoll physics obstacle courses. Pedal, lean, crash, lose a limb. Try again.",
@@ -100,6 +154,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.madspins",
       "testUrl": "https://play.google.com/apps/internaltest/4701223413274888476"
+    },
+    {
+      "package": "com.SpaceDonkey",
+      "title": "Space Donkey",
+      "shortDescription": "Endless highway racing. Weave through traffic, overtake close, chase the score.",
+      "icon": "icons/com.SpaceDonkey.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.SpaceDonkey",
+      "testUrl": "https://play.google.com/apps/internaltest/4701052251356315827"
     },
     {
       "package": "com.tripvault",
