@@ -62,15 +62,20 @@
   .tag.production { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
   .tag.internal, .tag.alpha, .tag.beta { color: var(--link); border-color: color-mix(in srgb, var(--link) 45%, transparent); }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  a.btn {
+  a.btn, button.btn {
     font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 7px;
     text-decoration: none; border: 1px solid var(--line); color: var(--text); background: transparent;
   }
-  a.btn:hover { background: var(--panel-hi); border-color: var(--muted); }
+  a.btn:hover, button.btn:hover { background: var(--panel-hi); border-color: var(--muted); }
   a.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
   a.btn.primary:hover { filter: brightness(1.08); }
+  button.btn { font-family: inherit; cursor: pointer; }
   .btn.off { opacity: .45; pointer-events: none; }
   footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
+  footer.stale {
+    color: var(--bad); font-weight: 600; border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent);
+    border-radius: 8px; padding: 10px 12px;
+  }
   .err { color: var(--bad); }
 </style>
 </head>
@@ -115,7 +120,8 @@ function card(a) {
   // build instead of waiting for the 6-hourly Play sync to fold it in.
   const url = links[a.package] || a.testUrl || '';
   const test = url
-    ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener">Join internal test</a>`
+    ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener">Join internal test</a>` +
+      `<button type="button" class="btn copy" data-url="${esc(url)}" title="Copy the test link">Copy link</button>`
     : `<span class="btn off">Test link not set</span>`;
 
   // Only live-on-Play apps get a store link. For anything still in testing the
@@ -156,10 +162,59 @@ Promise.all([
   links = Object.fromEntries(
     Object.entries(linkData).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string' && v));
   render();
-  const when = new Date(appData.generated);
-  foot.textContent = 'Last synced from Play ' + (isNaN(when) ? appData.generated : when.toLocaleString());
+  showSynced(appData.generated);
 }).catch(e => {
   grid.innerHTML = `<p class="err">Could not load app data — ${esc(e.message)}</p>`;
+});
+
+// The sync Action runs every 6h. If the page is showing data much older than
+// that the Action is failing silently — say so instead of serving stale data
+// under a timestamp nobody parses.
+const STALE_AFTER_MS = 24 * 60 * 60 * 1000;
+
+function showSynced(generated, now = Date.now()) {
+  const when = new Date(generated);
+  const bad = isNaN(when);
+  const age = bad ? Infinity : now - when.getTime();
+  const stamp = bad ? String(generated) : when.toLocaleString();
+  foot.classList.toggle('stale', age > STALE_AFTER_MS);
+  foot.textContent = age > STALE_AFTER_MS
+    ? `⚠ App data looks stale — last synced from Play ${stamp}. The 6-hourly sync may be failing; check the Sync Play apps workflow.`
+    : 'Last synced from Play ' + stamp;
+  return age > STALE_AFTER_MS;
+}
+
+// Sharing a test build means handing someone the opt-in URL, so make that one click.
+// navigator.clipboard is unavailable on insecure origins and can be denied by
+// permission, so keep the old execCommand route as a fallback.
+function legacyCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove();
+  return ok;
+}
+
+function flash(btn, label) {
+  btn.textContent = label;
+  setTimeout(() => { btn.textContent = 'Copy link'; }, 1600);
+}
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('button.copy');
+  if (!btn) return;
+  const url = btn.dataset.url;
+  const fallback = () => flash(btn, legacyCopy(url) ? 'Copied' : 'Copy failed');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => flash(btn, 'Copied'), fallback);
+  } else {
+    fallback();
+  }
 });
 
 q.addEventListener('input', render);

@@ -23,7 +23,13 @@ from googleapiclient.discovery import build
 
 ROOT = pathlib.Path(__file__).parent
 ICONS = ROOT / "icons"
-LOCAL_KEY = "/Users/g/Desktop/Vibe coded projects/homevault/app/play-service-account.json"
+# Local runs read the key from disk; CI passes it in PLAY_SERVICE_ACCOUNT.
+# The default is the real ~/dev path — the old Desktop one only worked
+# because Desktop is now a symlink into ~/dev.
+LOCAL_KEY = os.environ.get(
+    "PLAY_SERVICE_ACCOUNT_FILE",
+    str(pathlib.Path.home() / "dev/Vibe coded projects/homevault/app/play-service-account.json"),
+)
 
 # Highest track wins for the headline badge.
 TRACK_RANK = {"production": 4, "beta": 3, "alpha": 2, "internal": 1}
