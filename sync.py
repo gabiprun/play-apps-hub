@@ -33,6 +33,42 @@ LOCAL_KEY = os.environ.get(
 
 # Highest track wins for the headline badge.
 TRACK_RANK = {"production": 4, "beta": 3, "alpha": 2, "internal": 1}
+
+
+def summarise_tracks(tracks):
+    """Reduce the Play tracks payload to (per-track rows, best track).
+
+    Pure: no API calls, no I/O. Drafts are skipped entirely — a draft release
+    is not something anyone can install, so it must not set the headline badge
+    or appear in the per-track list. `best` is (rank, track name, version) for
+    the highest-ranked track, or None when nothing is live.
+
+    Split out of fetch_app so the badge ordering is testable; see test_sync.py.
+    """
+    rows = []
+    best = None
+    for track in tracks:
+        live = [r for r in track.get("releases", []) if r.get("status") != "draft"]
+        if not live:
+            continue
+        name = track["track"]
+        release = live[0]
+        rows.append(
+            {
+                "track": TRACK_LABEL.get(name, name),
+                "version": release.get("name"),
+                "status": release.get("status"),
+            }
+        )
+        rank = TRACK_RANK.get(name, 0)
+        if best is None or rank > best[0]:
+            best = (rank, name, release.get("name"))
+    return rows, best
+
+
+def app_sort_key(app):
+    """Highest track first, then title A-Z (case-insensitively)."""
+    return (-TRACK_RANK.get(app.get("statusKind"), 0), (app.get("title") or "").lower())
 TRACK_LABEL = {
     "production": "Production",
     "beta": "Open testing",
@@ -138,23 +174,7 @@ def fetch_app(svc, package, links):
             pass
 
         tracks = svc.edits().tracks().list(packageName=package, editId=edit_id).execute()
-        best = None
-        for track in tracks.get("tracks", []):
-            live = [r for r in track.get("releases", []) if r.get("status") != "draft"]
-            if not live:
-                continue
-            name = track["track"]
-            release = live[0]
-            entry["tracks"].append(
-                {
-                    "track": TRACK_LABEL.get(name, name),
-                    "version": release.get("name"),
-                    "status": release.get("status"),
-                }
-            )
-            rank = TRACK_RANK.get(name, 0)
-            if best is None or rank > best[0]:
-                best = (rank, name, release.get("name"))
+        entry["tracks"], best = summarise_tracks(tracks.get("tracks", []))
         if best:
             entry["status"] = TRACK_LABEL.get(best[1], best[1])
             entry["statusKind"] = best[1]
@@ -187,7 +207,7 @@ def main():
         except Exception as exc:
             print(f"  {package} FAILED: {str(exc)[:120]}")
 
-    apps.sort(key=lambda a: (-TRACK_RANK.get(a["statusKind"], 0), a["title"].lower()))
+    apps.sort(key=app_sort_key)
     payload = {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "apps": apps,

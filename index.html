@@ -108,9 +108,12 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function card(a) {
+  // data-letter carries the placeholder glyph so a broken <img> can degrade to
+  // the same initial the no-icon case already shows (see the error listener below).
+  const letter = esc((a.title || '?')[0].toUpperCase());
   const icon = a.icon
-    ? `<img class="icon" src="${esc(a.icon)}" alt="" loading="lazy">`
-    : `<div class="icon ph">${esc((a.title || '?')[0].toUpperCase())}</div>`;
+    ? `<img class="icon" src="${esc(a.icon)}" alt="" loading="lazy" data-letter="${letter}">`
+    : `<div class="icon ph">${letter}</div>`;
   const tags = [
     `<span class="tag ${esc(a.statusKind)}">${esc(a.status)}</span>`,
     a.version ? `<span class="tag">v${esc(a.version)}</span>` : ''
@@ -204,6 +207,19 @@ function flash(btn, label) {
   btn.textContent = label;
   setTimeout(() => { btn.textContent = 'Copy link'; }, 1600);
 }
+
+// A cached-but-since-deleted icon, or one that 404s from Pages, would otherwise
+// leave a broken-image glyph in the card. sync.py already writes icon:null when a
+// download fails, so this is the runtime half of the same guard. `error` does not
+// bubble, hence the capture-phase listener.
+grid.addEventListener('error', e => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement) || !img.classList.contains('icon')) return;
+  const ph = document.createElement('div');
+  ph.className = 'icon ph';
+  ph.textContent = img.dataset.letter || '?';
+  img.replaceWith(ph);
+}, true);
 
 grid.addEventListener('click', e => {
   const btn = e.target.closest('button.copy');
