@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-05T04:37:35Z",
+  "generated": "2026-09-05T06:55:08Z",
   "apps": [
     {
       "package": "com.scram",
@@ -136,6 +136,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.Isletopia",
       "testUrl": "https://play.google.com/apps/internaltest/4701214436800246559"
+    },
+    {
+      "package": "com.KnightsGrandiose",
+      "title": "Knights Grandiose",
+      "shortDescription": "Hold the line. Four heroes, endless waves, one perfect moment to strike.",
+      "icon": "icons/com.KnightsGrandiose.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "0.3.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "0.3.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.KnightsGrandiose",
+      "testUrl": "https://play.google.com/apps/internaltest/4701687106274430221"
     },
     {
       "package": "com.madspins",
