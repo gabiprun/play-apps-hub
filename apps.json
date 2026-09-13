@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-13T16:25:56Z",
+  "generated": "2026-09-13T20:55:40Z",
   "apps": [
     {
       "package": "com.scram",
@@ -84,24 +84,6 @@
       "testUrl": "https://play.google.com/apps/internaltest/4700429622775951240"
     },
     {
-      "package": "ca.dealharbour",
-      "title": "DealHarbour",
-      "shortDescription": "Your real estate command center \u2014 deals, deadlines, documents and CMAs.",
-      "icon": "icons/ca.dealharbour.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "1.0.0",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "1.0.0",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=ca.dealharbour",
-      "testUrl": "https://play.google.com/apps/internaltest/4701740621038776981"
-    },
-    {
       "package": "ca.prundaru.homevault",
       "title": "HomeVault",
       "shortDescription": "Your home inventory: every item, its place, its receipt, and its warranty.",
@@ -120,42 +102,6 @@
       "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
     },
     {
-      "package": "com.Isletopia",
-      "title": "Isletopia",
-      "shortDescription": "A side-scrolling island adventure. Explore, meet islanders, solve every quest!",
-      "icon": "icons/com.Isletopia.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "1.0.1 (2)",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "1.0.1 (2)",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=com.Isletopia",
-      "testUrl": "https://play.google.com/apps/internaltest/4701214436800246559"
-    },
-    {
-      "package": "com.KnightsGrandiose",
-      "title": "Knights Grandiose",
-      "shortDescription": "Hold the line. Four heroes, endless waves, one perfect moment to strike.",
-      "icon": "icons/com.KnightsGrandiose.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "0.3.0",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "0.3.0",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=com.KnightsGrandiose",
-      "testUrl": "https://play.google.com/apps/internaltest/4701687106274430221"
-    },
-    {
       "package": "com.madspins",
       "title": "Mad Spins",
       "shortDescription": "Ragdoll physics obstacle courses. Pedal, lean, crash, lose a limb. Try again.",
@@ -172,24 +118,6 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.madspins",
       "testUrl": "https://play.google.com/apps/internaltest/4701223413274888476"
-    },
-    {
-      "package": "com.SpaceDonkey",
-      "title": "Space Donkey",
-      "shortDescription": "Endless highway racing. Weave through traffic, overtake close, chase the score.",
-      "icon": "icons/com.SpaceDonkey.png",
-      "status": "Internal testing",
-      "statusKind": "internal",
-      "version": "1.0",
-      "tracks": [
-        {
-          "track": "Internal testing",
-          "version": "1.0",
-          "status": "completed"
-        }
-      ],
-      "storeUrl": "https://play.google.com/store/apps/details?id=com.SpaceDonkey",
-      "testUrl": "https://play.google.com/apps/internaltest/4701052251356315827"
     },
     {
       "package": "com.tripvault",
