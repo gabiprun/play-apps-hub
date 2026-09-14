@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-14T06:22:08Z",
+  "generated": "2026-09-14T07:43:35Z",
   "apps": [
     {
       "package": "com.scram",
@@ -64,6 +64,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.brickslide",
       "testUrl": "https://play.google.com/apps/internaltest/4701709560472334900"
+    },
+    {
+      "package": "com.chor.rpg",
+      "title": "Chor RPG",
+      "shortDescription": "",
+      "icon": null,
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.chor.rpg",
+      "testUrl": "https://play.google.com/apps/internaltest/4701532330040588159"
     },
     {
       "package": "com.CyberneticRolls",
