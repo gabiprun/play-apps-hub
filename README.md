@@ -45,6 +45,14 @@ There is deliberately **no in-browser editing**: a static site has nowhere safe 
 GitHub token, and standing up a backend just to edit a handful of URLs wasn't worth it.
 Editing is a `links.json` push.
 
+## Team projects vs My apps
+
+The page splits the cards into two columns, **Team projects** and **My apps**.
+`sections.json` decides which is which: list a package name under `"team"` and its card
+moves to the Team projects column. Every other app, including any newly synced one, stays
+under My apps. Like `links.json`, the page reads it directly, so a push is live on the next
+Pages build without waiting for a Play sync.
+
 ## Credentials
 
 The Action uses repo secret `PLAY_SERVICE_ACCOUNT` — the JSON body of

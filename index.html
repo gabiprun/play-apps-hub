@@ -24,7 +24,7 @@
     font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 20px 80px; }
   header { margin-bottom: 28px; }
   h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
   .sub { color: var(--muted); font-size: 14px; margin: 0; }
@@ -36,7 +36,20 @@
   }
   input[type=search]:focus { outline: 2px solid var(--link); outline-offset: -1px; }
   .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
-  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  /* Team projects on one side, the owner's own apps on the other; stacked on phones. */
+  .columns { display: grid; gap: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  @media (max-width: 860px) { .columns { grid-template-columns: minmax(0, 1fr); } }
+  .col-head {
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+  }
+  .col-head h2 { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+  .col-head .count { margin-left: auto; }
+  .grid { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+  .empty {
+    color: var(--muted); font-size: 14px; margin: 0;
+    border: 1px dashed var(--line); border-radius: 12px; padding: 18px;
+  }
   .card {
     background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
     padding: 16px; display: flex; gap: 14px; align-items: flex-start;
@@ -91,18 +104,34 @@
     <span class="count" id="count"></span>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div class="columns" id="columns">
+    <section aria-labelledby="team-h">
+      <div class="col-head"><h2 id="team-h">Team projects</h2><span class="count" id="team-count"></span></div>
+      <div class="grid" id="team-grid"></div>
+    </section>
+    <section aria-labelledby="mine-h">
+      <div class="col-head"><h2 id="mine-h">My apps</h2><span class="count" id="mine-count"></span></div>
+      <div class="grid" id="mine-grid"></div>
+    </section>
+  </div>
   <footer id="foot"></footer>
 </div>
 
 <script>
-const grid = document.getElementById('grid');
+const columns = document.getElementById('columns');
+const teamGrid = document.getElementById('team-grid');
+const mineGrid = document.getElementById('mine-grid');
+const teamCount = document.getElementById('team-count');
+const mineCount = document.getElementById('mine-count');
 const foot = document.getElementById('foot');
 const countEl = document.getElementById('count');
 const q = document.getElementById('q');
 
 let apps = [];
 let links = {};
+// Packages listed under "team" in sections.json. Everything else is "My apps",
+// so a newly synced app lands on the owner's side until someone moves it.
+let team = new Set();
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -151,23 +180,38 @@ function card(a) {
 
 function render() {
   const needle = q.value.trim().toLowerCase();
-  const shown = apps.filter(a =>
-    !needle || (a.title + ' ' + a.package + ' ' + (a.shortDescription || '')).toLowerCase().includes(needle));
-  grid.innerHTML = shown.map(card).join('') || `<p class="sub">No apps match “${esc(q.value)}”.</p>`;
-  countEl.textContent = `${shown.length} of ${apps.length} apps`;
+  const matches = a =>
+    !needle || (a.title + ' ' + a.package + ' ' + (a.shortDescription || '')).toLowerCase().includes(needle);
+
+  // Fills one column; returns how many of its apps are shown.
+  const fill = (el, colCount, all, emptyText) => {
+    const shown = all.filter(matches);
+    el.innerHTML = shown.map(card).join('') ||
+      `<p class="empty">${all.length ? `No apps match “${esc(q.value)}”.` : emptyText}</p>`;
+    colCount.textContent = needle ? `${shown.length} of ${all.length}` : String(all.length);
+    return shown.length;
+  };
+
+  const shown =
+    fill(teamGrid, teamCount, apps.filter(a => team.has(a.package)),
+      'No team projects yet — list their package names under "team" in sections.json.') +
+    fill(mineGrid, mineCount, apps.filter(a => !team.has(a.package)), 'No apps here yet.');
+  countEl.textContent = `${shown} of ${apps.length} apps`;
 }
 
 Promise.all([
   fetch('apps.json?t=' + Date.now()).then(r => r.json()),
   fetch('links.json?t=' + Date.now()).then(r => r.json()).catch(() => ({})),
-]).then(([appData, linkData]) => {
+  fetch('sections.json?t=' + Date.now()).then(r => r.json()).catch(() => ({})),
+]).then(([appData, linkData, sectionData]) => {
   apps = appData.apps || [];
   links = Object.fromEntries(
     Object.entries(linkData).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string' && v));
+  team = new Set((Array.isArray(sectionData.team) ? sectionData.team : []).filter(p => typeof p === 'string'));
   render();
   showSynced(appData.generated);
 }).catch(e => {
-  grid.innerHTML = `<p class="err">Could not load app data — ${esc(e.message)}</p>`;
+  columns.innerHTML = `<p class="err">Could not load app data — ${esc(e.message)}</p>`;
 });
 
 // The sync Action runs every 6h. If the page is showing data much older than
@@ -211,8 +255,8 @@ function flash(btn, label) {
 // A cached-but-since-deleted icon, or one that 404s from Pages, would otherwise
 // leave a broken-image glyph in the card. sync.py already writes icon:null when a
 // download fails, so this is the runtime half of the same guard. `error` does not
-// bubble, hence the capture-phase listener.
-grid.addEventListener('error', e => {
+// bubble, hence the capture-phase listener. Both columns share one listener.
+columns.addEventListener('error', e => {
   const img = e.target;
   if (!(img instanceof HTMLImageElement) || !img.classList.contains('icon')) return;
   const ph = document.createElement('div');
@@ -221,7 +265,7 @@ grid.addEventListener('error', e => {
   img.replaceWith(ph);
 }, true);
 
-grid.addEventListener('click', e => {
+columns.addEventListener('click', e => {
   const btn = e.target.closest('button.copy');
   if (!btn) return;
   const url = btn.dataset.url;
