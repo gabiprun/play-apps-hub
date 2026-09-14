@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-14T06:02:20Z",
+  "generated": "2026-09-14T06:04:45Z",
   "apps": [
     {
       "package": "com.scram",
@@ -136,6 +136,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.Isletopia",
       "testUrl": "https://play.google.com/apps/internaltest/4701214436800246559"
+    },
+    {
+      "package": "com.itneverends.tacticalgame",
+      "title": "It Doesn't End",
+      "shortDescription": "",
+      "icon": "icons/com.itneverends.tacticalgame.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.5",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.5",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.itneverends.tacticalgame",
+      "testUrl": null
     },
     {
       "package": "com.natha.knightsglory",
