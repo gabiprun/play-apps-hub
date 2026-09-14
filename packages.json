@@ -3,16 +3,17 @@
   "packages": [
     "ca.dealharbour",
     "ca.prundaru.homevault",
+    "ca.vitalsync",
     "com.BoltAway",
+    "com.brickslide",
     "com.CyberneticRolls",
     "com.Isletopia",
-    "com.KnightsGrandiose",
-    "com.SpaceDonkey",
-    "com.brickslide",
     "com.itneverends.tacticalgame",
+    "com.KnightsGrandiose",
     "com.madspins",
     "com.natha.knightsglory",
     "com.scram",
+    "com.SpaceDonkey",
     "com.tripvault"
   ]
 }
