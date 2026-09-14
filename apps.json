@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-14T05:04:47Z",
+  "generated": "2026-09-14T06:02:20Z",
   "apps": [
     {
       "package": "com.scram",
@@ -153,7 +153,7 @@
         }
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.natha.knightsglory",
-      "testUrl": null
+      "testUrl": "https://play.google.com/apps/internaltest/4700978628724832986"
     },
     {
       "package": "com.KnightsGrandiose",
@@ -162,11 +162,11 @@
       "icon": "icons/com.KnightsGrandiose.png",
       "status": "Internal testing",
       "statusKind": "internal",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "tracks": [
         {
           "track": "Internal testing",
-          "version": "0.3.0",
+          "version": "0.4.0",
           "status": "completed"
         }
       ],
