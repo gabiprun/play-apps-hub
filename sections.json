@@ -1,4 +1,11 @@
 {
   "_comment": "Which apps sit in the Team projects column. 'team' = package names; every other app goes under My apps. The page reads this file directly, so a push is live on the next Pages build.",
-  "team": []
+  "team": [
+    "com.CyberneticRolls",
+    "com.KnightsGrandiose",
+    "com.SpaceDonkey",
+    "com.itneverends.tacticalgame",
+    "com.madspins",
+    "com.natha.knightsglory"
+  ]
 }
