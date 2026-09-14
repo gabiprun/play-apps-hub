@@ -139,6 +139,49 @@ def download_icon(url, package):
     return f"icons/{package}.png" if dest.exists() else None
 
 
+# Attempts per Play call. googleapiclient backs off exponentially on 5xx and
+# 429, which absorbs the sporadic 503s the Publisher API returns.
+API_RETRIES = 4
+
+
+def is_missing(exc):
+    """True when Play answered 4xx: the thing genuinely isn't there.
+
+    A 404 on the en-US listing or the icon means the app has none yet, and a
+    bare card is the honest result. Anything else -- a 5xx or 429 that outlasted
+    the retries, a network failure -- says nothing about the app, so the whole
+    fetch should fail and main() keeps the last published entry instead of
+    publishing a blank card.
+    """
+    status = getattr(getattr(exc, "resp", None), "status", None)
+    return status is not None and 400 <= int(status) < 500 and int(status) != 429
+
+
+def carry_forward(package, previous, links):
+    """The last published entry for a package whose Play fetch just failed.
+
+    On 2026-09-13 a run of 503s dropped four apps off the hub: a failed fetch
+    simply left the app out, and the Action published the shorter list. Keeping
+    the previous entry means an API outage changes nothing on the page. The test
+    link is re-read from links.json exactly as for a fresh entry, so a link edit
+    still lands. None when there is nothing to keep (a package never synced).
+
+    Pure: no API calls, no I/O. See test_sync.py.
+    """
+    old = previous.get(package)
+    if old is None:
+        return None
+    return {**old, "testUrl": links.get(package) or None}
+
+
+def load_previous_apps():
+    """The entries in the apps.json about to be replaced, keyed by package."""
+    try:
+        return {a["package"]: a for a in json.loads((ROOT / "apps.json").read_text())["apps"]}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}
+
+
 def fetch_app(svc, package, links):
     entry = {
         "package": package,
@@ -153,27 +196,31 @@ def fetch_app(svc, package, links):
         "testUrl": links.get(package) or None,
     }
 
-    edit_id = svc.edits().insert(packageName=package, body={}).execute()["id"]
+    edit_id = svc.edits().insert(packageName=package, body={}).execute(num_retries=API_RETRIES)["id"]
     try:
         try:
             listing = svc.edits().listings().get(
                 packageName=package, editId=edit_id, language="en-US"
-            ).execute()
+            ).execute(num_retries=API_RETRIES)
             entry["title"] = listing.get("title") or package
             entry["shortDescription"] = listing.get("shortDescription", "")
-        except Exception:
-            pass
+        except Exception as exc:
+            if not is_missing(exc):
+                raise
 
         try:
             images = svc.edits().images().list(
                 packageName=package, editId=edit_id, language="en-US", imageType="icon"
-            ).execute()
+            ).execute(num_retries=API_RETRIES)
             if images.get("images"):
                 entry["icon"] = download_icon(images["images"][0]["url"], package)
-        except Exception:
-            pass
+        except Exception as exc:
+            if not is_missing(exc):
+                raise
 
-        tracks = svc.edits().tracks().list(packageName=package, editId=edit_id).execute()
+        tracks = svc.edits().tracks().list(packageName=package, editId=edit_id).execute(
+            num_retries=API_RETRIES
+        )
         entry["tracks"], best = summarise_tracks(tracks.get("tracks", []))
         if best:
             entry["status"] = TRACK_LABEL.get(best[1], best[1])
@@ -191,6 +238,7 @@ def fetch_app(svc, package, links):
 def main():
     links = json.loads((ROOT / "links.json").read_text())
     packages = discover_packages()
+    previous = load_previous_apps()
     svc = build(
         "androidpublisher",
         "v3",
@@ -198,14 +246,19 @@ def main():
         cache_discovery=False,
     )
 
-    apps = []
+    apps, kept = [], []
     for package in packages:
         try:
             entry = fetch_app(svc, package, links)
-            apps.append(entry)
             print(f"  {entry['title']} - {entry['status']} {entry['version'] or ''}")
         except Exception as exc:
             print(f"  {package} FAILED: {str(exc)[:120]}")
+            entry = carry_forward(package, previous, links)
+            if entry is None:
+                continue
+            kept.append(package)
+            print("    kept its last published entry")
+        apps.append(entry)
 
     apps.sort(key=app_sort_key)
     payload = {
@@ -213,7 +266,8 @@ def main():
         "apps": apps,
     }
     (ROOT / "apps.json").write_text(json.dumps(payload, indent=2) + "\n")
-    print(f"wrote apps.json - {len(apps)} apps")
+    carried = f", {len(kept)} carried forward ({', '.join(kept)})" if kept else ""
+    print(f"wrote apps.json - {len(apps)} apps{carried}")
     return 0 if apps else 1
 
 

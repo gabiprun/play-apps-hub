@@ -1,14 +1,62 @@
-"""Tests for sync.py's pure ranking logic.
+"""Tests for sync.py's pure logic.
 
-Everything else in sync.py is I/O against the Play API. These cover the two
+Everything else in sync.py is I/O against the Play API. These cover the
 decisions that shape what the page looks like — which track becomes an app's
-headline badge, and what order the cards come out in — so a future refactor
-cannot quietly reorder the hub or promote a draft.
+headline badge, what order the cards come out in, and what happens to an app
+whose Play fetch fails — so a future refactor cannot quietly reorder the hub,
+promote a draft, or drop apps over a transient API error.
 
 Run:  python3 -m pytest test_sync.py -q
 """
 
+import httplib2
+from googleapiclient.errors import HttpError
+
 import sync
+
+# --- carry_forward / is_missing ---------------------------------------------
+
+
+def entry(package, title, test_url=None):
+    return {"package": package, "title": title, "statusKind": "internal", "testUrl": test_url}
+
+
+def http_error(status):
+    return HttpError(httplib2.Response({"status": status}), b"")
+
+
+def test_a_failed_fetch_keeps_the_last_published_entry():
+    # 2026-09-13: four apps vanished from the hub because 503s dropped them.
+    previous = {"com.SpaceDonkey": entry("com.SpaceDonkey", "Space Donkey")}
+    kept = sync.carry_forward("com.SpaceDonkey", previous, links={})
+    assert kept["title"] == "Space Donkey"
+    assert kept["statusKind"] == "internal"
+
+
+def test_a_package_never_synced_has_nothing_to_keep():
+    assert sync.carry_forward("com.brandnew", {}, links={}) is None
+
+
+def test_carried_entries_follow_links_json_like_fresh_ones():
+    previous = {"com.madspins": entry("com.madspins", "Mad Spins", test_url="https://old")}
+    added = sync.carry_forward("com.madspins", previous, links={"com.madspins": "https://new"})
+    removed = sync.carry_forward("com.madspins", previous, links={})
+    assert added["testUrl"] == "https://new"
+    assert removed["testUrl"] is None
+    # The previous payload itself is left untouched.
+    assert previous["com.madspins"]["testUrl"] == "https://old"
+
+
+def test_a_4xx_means_the_listing_or_icon_is_genuinely_missing():
+    assert sync.is_missing(http_error(404))
+    assert sync.is_missing(http_error(403))
+
+
+def test_outages_are_not_mistaken_for_a_missing_listing():
+    # These must fail the fetch so the last good card is kept, not blanked.
+    assert not sync.is_missing(http_error(503))
+    assert not sync.is_missing(http_error(429))
+    assert not sync.is_missing(TimeoutError("read timed out"))
 
 
 def track(name, *releases):
