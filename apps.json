@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-17T04:59:42Z",
+  "generated": "2026-09-17T11:50:30Z",
   "apps": [
     {
       "package": "com.scram",
@@ -198,11 +198,11 @@
       "icon": "icons/com.KnightsGrandiose.png",
       "status": "Internal testing",
       "statusKind": "internal",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "tracks": [
         {
           "track": "Internal testing",
-          "version": "0.5.0",
+          "version": "0.6.0",
           "status": "completed"
         }
       ],
