@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T22:02:28Z",
+  "generated": "2026-09-21T22:42:38Z",
   "apps": [
     {
       "package": "com.scram",
@@ -136,6 +136,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=ca.prundaru.homevault",
       "testUrl": "https://play.google.com/apps/internaltest/4701090325149473235"
+    },
+    {
+      "package": "com.natha.horsesmajesty",
+      "title": "Horses Majesty",
+      "shortDescription": "",
+      "icon": null,
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.natha.horsesmajesty",
+      "testUrl": "https://play.google.com/apps/internaltest/4700945560075368517"
     },
     {
       "package": "com.Isletopia",
