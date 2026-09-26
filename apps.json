@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-26T05:07:57Z",
+  "generated": "2026-09-26T07:40:10Z",
   "apps": [
     {
       "package": "com.scram",
@@ -64,6 +64,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.brickslide",
       "testUrl": "https://play.google.com/apps/internaltest/4701709560472334900"
+    },
+    {
+      "package": "com.carmedic",
+      "title": "Car Medic",
+      "shortDescription": "Diagnose your car with an OBD-II adapter: codes, live data and plain answers.",
+      "icon": "icons/com.carmedic.png",
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "1.0.1",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "1.0.1",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.carmedic",
+      "testUrl": "https://play.google.com/apps/internaltest/4701645403297932229"
     },
     {
       "package": "com.chor.rpg",
