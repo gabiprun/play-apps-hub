@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-21T17:20:47Z",
+  "generated": "2026-10-21T20:05:42Z",
   "apps": [
     {
       "package": "com.scram",
@@ -262,6 +262,24 @@
       ],
       "storeUrl": "https://play.google.com/store/apps/details?id=com.madspins",
       "testUrl": "https://play.google.com/apps/internaltest/4701223413274888476"
+    },
+    {
+      "package": "com.g.pocketarmy",
+      "title": "Pocket Army",
+      "shortDescription": "",
+      "icon": null,
+      "status": "Internal testing",
+      "statusKind": "internal",
+      "version": "2.3.0 (110)",
+      "tracks": [
+        {
+          "track": "Internal testing",
+          "version": "2.3.0 (110)",
+          "status": "completed"
+        }
+      ],
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.g.pocketarmy",
+      "testUrl": "https://play.google.com/apps/internaltest/4701029225510005183"
     },
     {
       "package": "com.SpaceDonkey",
