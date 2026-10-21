@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-21T20:05:42Z",
+  "generated": "2026-10-21T21:49:04Z",
   "apps": [
     {
       "package": "com.scram",
@@ -90,11 +90,11 @@
       "icon": null,
       "status": "Internal testing",
       "statusKind": "internal",
-      "version": "1.0.3 (Build 5)",
+      "version": "1.0.6 (Build 6)",
       "tracks": [
         {
           "track": "Internal testing",
-          "version": "1.0.3 (Build 5)",
+          "version": "1.0.6 (Build 6)",
           "status": "completed"
         }
       ],
